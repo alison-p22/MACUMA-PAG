@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Colegio María Currea Manrique I.E.D. | Sistema de Gestión Académica</title>
+    <link rel="icon" type="image/png" href="assets/escudo.png">
+    <!-- Hojas de estilo -->
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+    <!-- ==========================================================================
+         HEADER INSTITUCIONAL PERMANENTE
+         ========================================================================== -->
+    <header class="header-institutional">
+        <div class="header-top-bar">
+            <span class="header-motto">⚜️ Respeto • Autonomía • Justicia ⚜️</span>
+            <span class="header-scale-info">
+                Sistema de Evaluación: <strong>Escala 1.0 a 5.0</strong> | Mínima Aprobatoria: <strong>3.4</strong>
+            </span>
+        </div>
+        <div class="header-content">
+            <a href="#" class="brand-wrapper" onclick="App.navigateToHome(event)">
+                <img src="assets/escudo.png" alt="Escudo Colegio María Currea Manrique I.E.D." class="brand-shield" id="mainHeaderShield">
+                <div class="brand-text">
+                    <h1>COLEGIO MARÍA CURREA MANRIQUE I.E.D.</h1>
+                    <p>Sistema Integrado de Gestión Académica, Calificaciones y Convivencia (SIGACE)</p>
+                </div>
+            </a>
+
+            <!-- Menú del Usuario Conectado (Se muestra sólo al iniciar sesión) -->
+            <div class="user-nav-actions" id="userNavActions" style="display: none;">
+                <div class="user-badge-profile">
+                    <div class="user-avatar-circle" id="userNavAvatar">👤</div>
+                    <div class="user-details">
+                        <span class="user-name" id="userNavName">Nombre Usuario</span>
+                        <span class="user-role-label" id="userNavRole">Rol</span>
+                    </div>
+                </div>
+                <button class="btn btn-sm btn-outline-primary" style="color: #ffffff; border-color: rgba(255,255,255,0.4);" onclick="App.logout()">
+                    Cerrar Sesión 🚪
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ==========================================================================
+         VISTA 1: INICIO DE SESIÓN SEGURO
+         ========================================================================== -->
+    <main class="login-section-container" id="loginView">
+        <div class="login-card">
+            <!-- Panel Izquierdo: Identidad Institucional -->
+            <div class="login-branding-panel">
+                <div class="login-crest-showcase">
+                    <img src="assets/escudo.png" alt="Escudo María Currea Manrique" class="login-big-shield">
+                    <div class="login-branding-text">
+                        <h2>MARÍA CURREA MANRIQUE</h2>
+                        <span class="institution-subtitle">INSTITUCIÓN EDUCATIVA DISTRITAL</span>
+                    </div>
+                </div>
+
+                <ul class="login-features-list">
+                    <li><span class="icon-check">✓</span> Portal seguro e individual para Estudiantes y Docentes</li>
+                    <li><span class="icon-check">✓</span> Consulta de notas en tiempo real y promedio general</li>
+                    <li><span class="icon-check">✓</span> Puesto oficial en el salón y cuadro de honor</li>
+                    <li><span class="icon-check">✓</span> Seguimiento detallado a planes de mejoramiento (PEE)</li>
+                    <li><span class="icon-check">✓</span> Canal de comunicación directa estudiante - profesor</li>
+                </ul>
+
+                <div class="login-branding-footer">
+                    <span>Bogotá D.C. - Colombia</span>
+                    <span>Código DANE: 111001099234</span>
+                </div>
+            </div>
+
+            <!-- Panel Derecho: Formulario de Autenticación -->
+            <div class="login-form-panel">
+                <div class="login-header-form">
+                    <h3>Acceso a la Plataforma</h3>
+                    <p>Ingresa tus credenciales institucionales seguras para continuar</p>
+                </div>
+
+                <!-- Selector de Tipo de Usuario -->
+                <div class="role-switcher-tabs">
+                    <button type="button" class="role-tab-btn active" id="tabRoleEstudiante" onclick="App.setLoginRole('student')">
+                        👨‍🎓 Estudiante
+                    </button>
+                    <button type="button" class="role-tab-btn" id="tabRoleDocente" onclick="App.setLoginRole('teacher')">
+                        👨‍🏫 Docente
+                    </button>
+                </div>
+
+                <!-- Notificación de Seguridad SSL -->
+                <div class="security-badge-notice">
+                    🔒 Conexión cifrada institucional protegida por protocolos educativos.
+                </div>
+
+                <!-- Formulario -->
+                <form id="loginForm" onsubmit="App.handleLoginSubmit(event)">
+                    <div class="form-group">
+                        <label for="loginEmail">Correo Institucional</label>
+                        <div class="input-with-icon">
+                            <span class="input-icon">✉️</span>
+                            <input type="email" id="loginEmail" placeholder="usuario@mariacurrea.edu.co" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="loginPassword">Contraseña</label>
+                        <div class="input-with-icon">
+                            <span class="input-icon">🔑</span>
+                            <input type="password" id="loginPassword" placeholder="••••••••••••" required>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px; padding: 12px;">
+                        Ingresar de Manera Segura 🚀
+                    </button>
+                </form>
+
+                <!-- Acceso Rápido con Cuentas de Prueba Preconfiguradas -->
+                <div class="quick-test-accounts">
+                    <h4>⚡ Cuentas de Prueba (Acceso Directo con 1 Clic):</h4>
+                    <div class="quick-accounts-grid">
+                        <button type="button" class="quick-btn" onclick="App.quickLogin('prof_carlos')">
+                            <span>👨‍🏫 <strong>Prof. Carlos Restrepo</strong> (Matemáticas / Dir. 901)</span>
+                            <span class="btn-badge" style="background:#dbeafe; color:#1d4ed8;">Docente</span>
+                        </button>
+                        <button type="button" class="quick-btn" onclick="App.quickLogin('prof_marta')">
+                            <span>👩‍🏫 <strong>Prof. Marta Gómez</strong> (Español / Inglés)</span>
+                            <span class="btn-badge" style="background:#dbeafe; color:#1d4ed8;">Docente</span>
+                        </button>
+                        <button type="button" class="quick-btn" onclick="App.quickLogin('est_juan')">
+                            <span>👨‍🎓 <strong>Juan Camilo Parra</strong> (Va perdiendo 2 materias con PEE)</span>
+                            <span class="btn-badge" style="background:#fee2e2; color:#b91c1c;">Estudiante</span>
+                        </button>
+                        <button type="button" class="quick-btn" onclick="App.quickLogin('est_valentina')">
+                            <span>👩‍🎓 <strong>Valentina Moreno</strong> (Puesto #1 en el Salón)</span>
+                            <span class="btn-badge" style="background:#dcfce7; color:#15803d;">Puesto 1</span>
+                        </button>
+                        <button type="button" class="quick-btn" onclick="App.quickLogin('est_andres')">
+                            <span>👨‍🎓 <strong>Andrés Felipe Torres</strong> (Puesto #6 en el Salón)</span>
+                            <span class="btn-badge" style="background:#fef3c7; color:#b45309;">Estudiante</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div style="margin-top: 15px; text-align: center;">
+                    <button type="button" class="btn btn-sm btn-outline" style="font-size:0.75rem;" onclick="App.resetDataPrompt()">
+                        🔄 Restaurar datos de prueba originales
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- ==========================================================================
+         VISTA 2: PORTAL DEL ESTUDIANTE
+         ========================================================================== -->
+    <div class="main-dashboard-wrapper" id="studentDashboardView" style="display: none;">
+        
+        <!-- Banner de Bienvenida del Estudiante -->
+        <div class="dashboard-top-banner">
+            <div class="banner-welcome">
+                <h2><span id="stWelcomePhoto">👨‍🎓</span> Bienvenido(a), <span id="stWelcomeName">Estudiante</span></h2>
+                <p>
+                    <span id="stWelcomeCourse" class="badge badge-alto">Curso 901</span> &bull; 
+                    Código: <strong id="stWelcomeCode">2026-901-01</strong> &bull; 
+                    Jornada: <strong>Mañana</strong> &bull; 
+                    Periodo Académico: <strong>Tercer Periodo (3°)</strong>
+                </p>
+            </div>
+            <div class="banner-controls">
+                <button class="btn btn-outline-primary" onclick="App.openContactModal(null)">
+                    ✉️ Contactar a un Profesor
+                </button>
+                <button class="btn btn-secondary" onclick="App.printReportCard()">
+                    🖨️ Generar / Imprimir Boletín
+                </button>
+            </div>
+        </div>
+
+        <!-- Tarjetas de Métricas de Rendimiento -->
+        <div class="metrics-grid-summary">
+            <!-- Promedio Acumulado -->
+            <div class="metric-card">
+                <div class="metric-card-icon icon-wine">📊</div>
+                <div class="metric-card-data">
+                    <span class="metric-title">Promedio General</span>
+                    <span class="metric-value" id="stAverageValue">0.00</span>
+                    <span class="metric-subtitle" id="stAverageLevel">Desempeño</span>
+                </div>
+            </div>
+
+            <!-- Puesto en el Salón -->
+            <div class="metric-card metric-rank-card">
+                <div class="metric-card-icon icon-gold">🏆</div>
+                <div class="metric-card-data">
+                    <span class="metric-title">Puesto en el Salón</span>
+                    <span class="metric-value" id="stRankValue">Puesto 1°</span>
+                    <span class="metric-subtitle" id="stRankDetail">Entre 10 estudiantes</span>
+                </div>
+            </div>
+
+            <!-- Materias que va Perdiendo -->
+            <div class="metric-card metric-failing-card" id="stFailingCard">
+                <div class="metric-card-icon icon-red">⚠️</div>
+                <div class="metric-card-data">
+                    <span class="metric-title">Materias en Riesgo (&lt; 3.4)</span>
+                    <span class="metric-value" id="stFailingCount">0</span>
+                    <span class="metric-subtitle" id="stFailingSubtitle">Requieren Plan PEE</span>
+                </div>
+            </div>
+
+            <!-- Total de Materias -->
+            <div class="metric-card">
+                <div class="metric-card-icon icon-blue">📚</div>
+                <div class="metric-card-data">
+                    <span class="metric-title">Asignaturas Cursadas</span>
+                    <span class="metric-value" id="stTotalSubjects">8</span>
+                    <span class="metric-subtitle">Año Lectivo 2026</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN DESTACADA: MATERIAS QUE VA PERDIENDO Y EL POR QUÉ (PEE) -->
+        <div class="pee-alert-container" id="stPeeContainer" style="display: none;">
+            <div class="pee-alert-header">
+                <span class="alert-icon">⚠️</span>
+                <div>
+                    <h3>Atención Académica: Asignaturas en Desempeño Bajo (&lt; 3.4)</h3>
+                    <p>A continuación se detallan las materias reprobadas, <strong>las razones exactas registradas por los docentes</strong> y las actividades del <strong>Plan Especial de Evaluación (PEE)</strong> que debes presentar para nivelar.</p>
+                </div>
+            </div>
+
+            <div class="pee-cards-grid" id="stPeeCardsList">
+                <!-- Se llena dinámicamente con JavaScript -->
+            </div>
+        </div>
+
+        <!-- TABLA COMPLETA DE CALIFICACIONES (PLANILLA DE NOTAS) -->
+        <div class="section-panel-card">
+            <div class="section-panel-header">
+                <h3>📑 Sabana Completa de Calificaciones</h3>
+                <div>
+                    <span class="badge badge-superior">Superior (4.6 - 5.0)</span>
+                    <span class="badge badge-alto">Alto (4.0 - 4.5)</span>
+                    <span class="badge badge-basico">Básico (3.4 - 3.9)</span>
+                    <span class="badge badge-bajo">Bajo (&lt; 3.4)</span>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="custom-table" id="stGradesTable">
+                    <thead>
+                        <tr>
+                            <th>Asignatura</th>
+                            <th>Docente a Cargo</th>
+                            <th style="text-align: center;">Periodo 1</th>
+                            <th style="text-align: center;">Periodo 2</th>
+                            <th style="text-align: center;">Periodo 3</th>
+                            <th style="text-align: center;">Definitiva</th>
+                            <th>Nivel de Desempeño</th>
+                            <th>Estado</th>
+                            <th style="text-align: right;">Contacto</th>
+                        </tr>
+                    </thead>
+                    <tbody id="stGradesTableBody">
+                        <!-- Se llena dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- SECCIÓN DE OBSERVACIONES Y MENSAJES -->
+        <div class="messages-container">
+            <!-- Observador de Convivencia y Seguimiento Pedagógico -->
+            <div class="messages-list-card">
+                <div class="section-panel-header" style="padding: 0 0 14px 0; margin-bottom: 12px;">
+                    <h3>📋 Observador del Estudiante</h3>
+                </div>
+                <div id="stObservadorContent" style="font-size: 0.9rem; line-height: 1.6; color: var(--text-main); background: #F8FAFC; padding: 16px; border-radius: var(--radius-md); border-left: 4px solid var(--secondary);">
+                    Cargando observaciones...
+                </div>
+                <div style="margin-top: 15px; font-size: 0.8rem; color: var(--text-muted);">
+                    <em>Nota: Cualquier citación a acudientes o acta de compromiso será notificada por este medio y por agenda institucional.</em>
+                </div>
+            </div>
+
+            <!-- Historial de Mensajes con Docentes -->
+            <div class="messages-new-card">
+                <div class="section-panel-header" style="padding: 0 0 14px 0; margin-bottom: 12px;">
+                    <h3>💬 Comunicación con Docentes</h3>
+                    <button class="btn btn-sm btn-primary" onclick="App.openContactModal(null)">
+                        Nuevo Mensaje ✍️
+                    </button>
+                </div>
+                <div id="stMessagesList" style="max-height: 380px; overflow-y: auto;">
+                    <!-- Se llena dinámicamente con los mensajes -->
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ==========================================================================
+         VISTA 3: PORTAL DEL PROFESOR / DOCENTE
+         ========================================================================== -->
+    <div class="main-dashboard-wrapper" id="teacherDashboardView" style="display: none;">
+
+        <!-- Banner de Bienvenida del Docente -->
+        <div class="dashboard-top-banner">
+            <div class="banner-welcome">
+                <h2>👨‍🏫 Panel Docente: <span id="tcWelcomeName">Lic. Profesor</span></h2>
+                <p>
+                    <span id="tcWelcomeCargo">Docente de Matemáticas y Tecnología</span> &bull; 
+                    <span id="tcWelcomeDirector" class="badge badge-gold">Director de Curso 901</span>
+                </p>
+            </div>
+            <div class="banner-controls">
+                <button class="btn btn-outline" onclick="App.scrollToSection('tcMessagesSection')">
+                    📬 Bandeja de Mensajes (<span id="tcUnreadBadge">0</span>)
+                </button>
+            </div>
+        </div>
+
+        <!-- Barra de Filtros: Selector de Salón y Materia -->
+        <div class="teacher-controls-bar">
+            <div class="control-item">
+                <label for="tcSelectSalon">🏫 Salón / Curso:</label>
+                <select id="tcSelectSalon" class="control-select" onchange="App.handleTeacherFilterChange()">
+                    <option value="901" selected>Grado 901 (Mañana)</option>
+                    <option value="902">Grado 902 (Mañana)</option>
+                    <option value="1001">Grado 1001 (Mañana)</option>
+                </select>
+            </div>
+
+            <div class="control-item">
+                <label for="tcSelectSubject">📖 Asignatura a Calificar:</label>
+                <select id="tcSelectSubject" class="control-select" onchange="App.handleTeacherFilterChange()">
+                    <!-- Se llena con las materias del profesor -->
+                </select>
+            </div>
+
+            <div style="margin-left: auto; display: flex; gap: 8px;">
+                <span class="badge badge-gold" style="font-size: 0.85rem; padding: 6px 12px;">
+                    Escala: 1.0 - 5.0 | Pasa con &ge; 3.4
+                </span>
+            </div>
+        </div>
+
+        <!-- Tarjetas de Métricas del Salón -->
+        <div class="metrics-grid-summary">
+            <!-- Promedio del Salón -->
+            <div class="metric-card">
+                <div class="metric-card-icon icon-wine">📈</div>
+                <div class="metric-card-data">
+                    <span class="metric-title">Promedio del Salón</span>
+                    <span class="metric-value" id="tcMetricSalonAvg">0.00</span>
+                    <span class="metric-subtitle" id="tcMetricSalonDetail">Promedio integral del grupo</span>
+                </div>
+            </div>
+
+            <!-- Cantidad de Estudiantes que van Perdiendo -->
+            <div class="metric-card metric-failing-card">
+                <div class="metric-card-icon icon-red">⚠️</div>
+                <div class="metric-card-data">
+                    <span class="metric-title">Estudiantes Perdiendo Materia</span>
+                    <span class="metric-value" id="tcMetricFailingCount">0</span>
+                    <span class="metric-subtitle" id="tcMetricFailingRate">0% del salón en riesgo</span>
+                </div>
+            </div>
+
+            <!-- Estudiantes Aprobando -->
+            <div class="metric-card">
+                <div class="metric-card-icon icon-green">✅</div>
+                <div class="metric-card-data">
+                    <span class="metric-title">Estudiantes Aprobados</span>
+                    <span class="metric-value" id="tcMetricPassingCount">0</span>
+                    <span class="metric-subtitle" id="tcMetricPassingRate">0% de aprobación</span>
+                </div>
+            </div>
+
+            <!-- Total de Estudiantes -->
+            <div class="metric-card">
+                <div class="metric-card-icon icon-blue">👥</div>
+                <div class="metric-card-data">
+                    <span class="metric-title">Total de Estudiantes</span>
+                    <span class="metric-value" id="tcMetricTotalStudents">0</span>
+                    <span class="metric-subtitle">Matriculados en lista</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- PLANILLA DE CALIFICACIONES EDITABLE -->
+        <div class="section-panel-card">
+            <div class="section-panel-header">
+                <div>
+                    <h3>📝 Planilla Oficial de Calificaciones (<span id="tcCurrentSubjectLabel">Matemáticas</span>)</h3>
+                    <p style="font-size: 0.82rem; color: var(--text-muted); margin-top: 2px;">
+                        Modifica directamente las notas de los periodos y pulsa <strong>Guardar Notas</strong>. La nota mínima para pasar es 3.4.
+                    </p>
+                </div>
+                <div style="display: flex; gap: 10px;">
+                    <button class="btn btn-primary" onclick="App.saveAllTeacherGrades()">
+                        💾 Guardar Todas las Notas
+                    </button>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="custom-table" id="tcGradesTable">
+                    <thead>
+                        <tr>
+                            <th style="width: 40px;">#</th>
+                            <th>Estudiante</th>
+                            <th style="text-align: center; width: 90px;">Periodo 1 (1.0-5.0)</th>
+                            <th style="text-align: center; width: 90px;">Periodo 2 (1.0-5.0)</th>
+                            <th style="text-align: center; width: 90px;">Periodo 3 (1.0-5.0)</th>
+                            <th style="text-align: center; width: 85px;">Definitiva</th>
+                            <th style="text-align: center;">Estado</th>
+                            <th style="text-align: center;">Puesto en Salón</th>
+                            <th style="text-align: center;">Acciones & PEE</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tcGradesTableBody">
+                        <!-- Filas de estudiantes editables -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- RANKING Y CUADRO DE HONOR DEL SALÓN -->
+        <div class="section-panel-card">
+            <div class="section-panel-header">
+                <h3>🏆 Cuadro de Honor y Puestos del Salón</h3>
+                <span class="badge badge-gold">Calculado con Promedio Integral de Todas las Materias</span>
+            </div>
+            <div class="table-responsive">
+                <table class="custom-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 60px; text-align: center;">Puesto</th>
+                            <th>Estudiante</th>
+                            <th style="text-align: center;">Promedio General</th>
+                            <th style="text-align: center;">Materias Reprobadas</th>
+                            <th>Estado Académico</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tcRankingTableBody">
+                        <!-- Filas del ranking ordenadas de 1 a N -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- BANDEJA DE MENSAJES Y CONTACTO CON ESTUDIANTES -->
+        <div class="section-panel-card" id="tcMessagesSection">
+            <div class="section-panel-header">
+                <h3>💬 Bandeja de Mensajes de Estudiantes (<span id="tcTotalMessagesCount">0</span>)</h3>
+                <span style="font-size: 0.82rem; color: var(--text-muted);">
+                    Los estudiantes pueden realizar preguntas sobre sus notas y el Plan Especial de Evaluación (PEE)
+                </span>
+            </div>
+            <div style="padding: 20px;">
+                <div id="tcMessagesListContainer">
+                    <!-- Mensajes recibidos con formulario para responder -->
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ==========================================================================
+         MODAL 1: REGISTRAR / EDITAR PEE (PLAN ESPECIAL DE EVALUACIÓN)
+         ========================================================================== -->
+    <div class="modal-overlay" id="modalPee">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>📝 Plan Especial de Evaluación (PEE) & Anotación</h3>
+                <button class="modal-close-btn" onclick="App.closeModal('modalPee')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 16px;">
+                    Registra el motivo pedagógico por el cual el estudiante va perdiendo (< 3.4), las actividades asignadas para recuperar y la fecha límite.
+                </p>
+                <form id="formPee" onsubmit="App.handleSavePeeSubmit(event)">
+                    <input type="hidden" id="peeStudentId">
+                    <input type="hidden" id="peeSubjectId">
+
+                    <div class="form-group">
+                        <label>Estudiante:</label>
+                        <input type="text" id="peeStudentName" class="form-control" readonly style="font-weight: bold; background: #F1F5F9;">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Asignatura:</label>
+                        <input type="text" id="peeSubjectName" class="form-control" readonly style="font-weight: bold; background: #F1F5F9;">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="peeMotivo">¿Por qué está perdiendo el estudiante? (Motivo Pedagógico) *</label>
+                        <textarea id="peeMotivo" class="form-control" rows="3" required placeholder="Ej: No entregó los talleres 2 y 3, dificultad en operaciones con polinomios y bajo puntaje en la evaluación de corte..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="peePlanAccion">Plan de Acción / Actividad Remedial Asignada (PEE) *</label>
+                        <textarea id="peePlanAccion" class="form-control" rows="3" required placeholder="Ej: Desarrollo del taller remedial de 10 ejercicios y sustentación individual presencial..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="peeFechaLimite">Fecha Límite de Entrega / Sustentación *</label>
+                        <input type="date" id="peeFechaLimite" class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="peeCompromiso">Compromiso con el Acudiente:</label>
+                        <input type="text" id="peeCompromiso" class="form-control" placeholder="Ej: Firma de compromiso y revisión del cuaderno de trabajo en casa.">
+                    </div>
+
+                    <div class="modal-footer" style="padding-right: 0; padding-bottom: 0;">
+                        <button type="button" class="btn btn-outline" onclick="App.closeModal('modalPee')">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Guardar Anotación y PEE 💾</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================================================
+         MODAL 2: ENVIAR MENSAJE A UN PROFESOR (ESTUDIANTE -> DOCENTE)
+         ========================================================================== -->
+    <div class="modal-overlay" id="modalContactTeacher">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>✉️ Contactar al Docente</h3>
+                <button class="modal-close-btn" onclick="App.closeModal('modalContactTeacher')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="formContactTeacher" onsubmit="App.handleSendContactSubmit(event)">
+                    <div class="form-group">
+                        <label for="contactSelectSubject">Asignatura y Docente Destinatario *</label>
+                        <select id="contactSelectSubject" class="control-select" style="width: 100%;" required>
+                            <!-- Se llena con las asignaturas y docentes correspondientes -->
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contactTopic">Asunto / Motivo del Mensaje *</label>
+                        <input type="text" id="contactTopic" class="form-control" placeholder="Ej: Dudas sobre el taller de nivelación PEE, entrega de actividad..." required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contactMessage">Mensaje para el Docente *</label>
+                        <textarea id="contactMessage" class="form-control" rows="4" placeholder="Escribe tu mensaje con cordialidad y claridad..." required></textarea>
+                    </div>
+
+                    <div class="modal-footer" style="padding-right: 0; padding-bottom: 0;">
+                        <button type="button" class="btn btn-outline" onclick="App.closeModal('modalContactTeacher')">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Enviar Mensaje 📤</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================================================
+         MODAL 3: VISTA DE IMPRESIÓN DEL BOLETÍN OFICIAL
+         ========================================================================== -->
+    <div class="modal-overlay" id="modalReportCard">
+        <div class="modal-content" style="max-width: 850px;">
+            <div class="modal-header">
+                <h3>📄 Boletín de Calificaciones - Vista Oficial</h3>
+                <button class="modal-close-btn" onclick="App.closeModal('modalReportCard')">&times;</button>
+            </div>
+            <div class="modal-body" id="reportCardModalContent">
+                <!-- Se llena con el boletín oficial estilizado -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline" onclick="App.closeModal('modalReportCard')">Cerrar</button>
+                <button type="button" class="btn btn-primary" onclick="window.print()">🖨️ Imprimir / Guardar PDF</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONTENEDOR OCULTO PARA IMPRESIÓN DIRECTA CON WINDOW.PRINT -->
+    <div class="report-card-print-view" id="printableReportCard"></div>
+
+    <!-- CONTENEDOR DE TOAST NOTIFICACIONES -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- ==========================================================================
+         FOOTER INSTITUCIONAL
+         ========================================================================== -->
+    <footer class="footer-institutional">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <img src="assets/escudo.png" alt="Escudo María Currea">
+                <div>
+                    <strong>Colegio María Currea Manrique I.E.D.</strong> &bull; Secretaría de Educación del Distrito Capital
+                    <div style="font-size: 0.75rem; color: rgba(255,255,255,0.6);">
+                        Valores: Respeto • Autonomía • Justicia | Sistema SIGACE v2.0
+                    </div>
+                </div>
+            </div>
+            <div>
+                <span>Escala Oficial de Evaluación: 1.0 a 5.0 (Aprobatoria: 3.4)</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts de la Aplicación -->
+    <script src="js/data.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
